@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chalte Raho - Product Details</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased min-h-screen">
+
+  <nav class="bg-white/80 backdrop-blur-md border-b border-slate-100 px-6 py-4 flex justify-between items-center sticky top-0 z-50">
+    <div class="text-2xl font-bold tracking-tight text-orange-600 cursor-pointer" onclick="window.location.href='index.html'">
+      Chalte<span class="text-slate-800">Raho.</span>
+    </div>
+    <button onclick="window.location.href='index.html'" class="text-xs font-semibold text-slate-600 hover:text-orange-600 bg-slate-100 px-4 py-2 rounded-xl transition">
+      ← Back to Store
+    </button>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-6 py-12">
+    
+    <div id="product-loader" class="text-center py-20 text-slate-400 animate-pulse font-medium">
+      Shoe ki details fetch ho rahi hain...
+    </div>
+
+    <div id="product-content" class="grid grid-cols-1 md:grid-cols-2 gap-12 bg-white border border-slate-100 rounded-3xl p-6 md:p-12 shadow-sm hidden">
+      
+      <div class="aspect-square bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 p-4 flex items-center justify-center">
+        <img id="shoe-img" src="" alt="Shoe Image" class="max-h-full max-w-full object-contain rounded-xl shadow-sm hover:scale-105 transition duration-300">
+      </div>
+
+      <div class="flex flex-col justify-between">
+        <div>
+          <span id="shoe-tag" class="bg-orange-100 text-orange-700 text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider hidden"></span>
+          <h1 id="shoe-name" class="text-3xl font-extrabold text-slate-800 tracking-tight mt-3">Shoe Name Loading...</h1>
+          <p id="shoe-cat" class="text-sm text-slate-400 mt-1 font-medium">Category: Shoes</p>
+          
+          <div class="mt-6 flex items-baseline space-x-3">
+            <span id="shoe-price" class="text-3xl font-black text-slate-900">₹0</span>
+            <span class="text-sm text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md">Free Delivery</span>
+          </div>
+
+          <p class="text-slate-500 text-sm mt-6 leading-relaxed border-t border-slate-100 pt-6">
+            Chalte Raho premium sneaker series offers unparalleled comfort and style. Built for high performance, daily lifestyle hustle, and durability. Crafted with premium materials.
+          </p>
+
+          <div class="mt-8">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-3">Select UK Size</h4>
+            <div class="flex space-x-3" id="size-box">
+              <button onclick="selectSize(this)" class="w-12 h-12 rounded-xl border border-slate-200 text-sm font-semibold hover:border-orange-500 transition">7</button>
+              <button onclick="selectSize(this)" class="w-12 h-12 rounded-xl border border-slate-200 text-sm font-semibold hover:border-orange-500 transition">8</button>
+              <button onclick="selectSize(this)" class="w-12 h-12 rounded-xl border border-slate-200 text-sm font-semibold hover:border-orange-500 transition">9</button>
+              <button onclick="selectSize(this)" class="w-12 h-12 rounded-xl border border-slate-200 text-sm font-semibold hover:border-orange-500 transition">10</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-slate-100">
+          <button id="buy-btn" class="w-full bg-slate-950 hover:bg-orange-600 text-white font-semibold py-4 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
+            Buy Now & Proceed
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCfour2pGNn0VXBkWNbFFNCcc7Z1U_Pvfs",
+      authDomain: "my-app-9cd4e.firebaseapp.com",
+      projectId: "my-app-9cd4e",
+      storageBucket: "my-app-9cd4e.firebasestorage.app",
+      messagingSenderId: "600438554251",
+      appId: "1:600438554251:web:a840935c234eb346e99e8e"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Size Selector Logic
+    let selectedSize = null;
+    window.selectSize = (btn) => {
+      // Reset all buttons border
+      document.querySelectorAll('#size-box button').forEach(b => b.classList.remove('border-orange-500', 'bg-orange-50', 'text-orange-600'));
+      // Active current button
+      btn.classList.add('border-orange-500', 'bg-orange-50', 'text-orange-600');
+      selectedSize = btn.innerText;
+    };
+
+    // Get Product ID from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+
+    async function loadSingleProduct() {
+      if(!productId) {
+        alert("Product ID nahi mili!");
+        window.location.href = "index.html";
+        return;
+      }
+
+      // Fetch precise single document from Firestore
+      const docRef = doc(db, "products", productId);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const product = docSnap.data();
+
+        // Update Dom Elements
+        document.getElementById('shoe-name').innerText = product.name;
+        document.getElementById('shoe-price').innerText = `₹${product.price}`;
+        document.getElementById('shoe-img').src = product.imageBase64 || "https://via.placeholder.com/500";
+        if(product.tag) {
+          const tagEl = document.getElementById('shoe-tag');
+          tagEl.innerText = product.tag;
+          tagEl.classList.remove('hidden');
+        }
+
+        // Hide Loader & Display Content
+        document.getElementById('product-loader').classList.add('hidden');
+        document.getElementById('product-content').classList.remove('hidden');
+
+        // Buy button logic trigger
+        document.getElementById('buy-btn').onclick = () => {
+          if(!selectedSize) {
+            alert("Bhai phle size toh select kar lo!");
+            return;
+          }
+          alert(`Success! Shoe: ${product.name}, Size: ${selectedSize}. Ab isko checkout system pe direct redirect kar sakte hain!`);
+        };
+
+      } else {
+        alert("Aisa koi product nahi mila database me!");
+        window.location.href = "index.html";
+      }
+    }
+
+    loadSingleProduct().catch(err => console.error(err));
+  </script>
+</body>
+</html>

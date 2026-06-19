@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chalte Raho - Premium Shoes Store</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Custom Seamless Slider CSS for Perfect Mobile Sliding */
+    .slider-window {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide-item {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      transform: translateX(100%);
+      transition: transform 0.6s ease-in-out;
+    }
+    .slide-item.active {
+      transform: translateX(0);
+    }
+    .slide-item.prev {
+      transform: translateX(-100%);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased min-h-screen">
+
+  <nav class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-100 px-6 py-4 flex justify-between items-center">
+    <div class="text-2xl font-bold tracking-tight text-orange-600 cursor-pointer" onclick="window.location.reload()">
+      Chalte<span class="text-slate-800">Raho.</span>
+    </div>
+    
+    <div class="hidden md:flex space-x-8 text-sm font-semibold text-slate-600">
+      <a href="index.html" class="text-orange-600">Sneakers</a>
+      <a href="#" class="hover:text-orange-600 transition">New Arrivals</a>
+      <a href="#" class="hover:text-orange-600 transition">Contact Us</a>
+    </div>
+
+    <div class="flex items-center space-x-4">
+      <div class="hidden sm:block text-xs font-bold text-slate-500 bg-slate-100 px-3 py-2 rounded-xl">
+        ⚡ Fast Delivery
+      </div>
+      <button onclick="toggleMobileMenu()" class="p-2 text-slate-700 hover:text-orange-600 bg-slate-100 rounded-xl transition focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <div id="mobile-menu" class="fixed inset-y-0 right-0 z-50 w-64 bg-white shadow-2xl border-l border-slate-100 transform translate-x-full transition-transform duration-300 ease-in-out hidden p-6">
+    <div class="flex justify-between items-center mb-8">
+      <div class="text-lg font-bold text-slate-800">Menu</div>
+      <button onclick="toggleMobileMenu()" class="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+    </div>
+    <div class="flex flex-col space-y-5 text-base font-semibold text-slate-600">
+      <a href="index.html" class="text-orange-600" onclick="toggleMobileMenu()">Sneakers</a>
+      <a href="#" class="hover:text-orange-600 transition" onclick="toggleMobileMenu()">New Arrivals</a>
+      <a href="#" class="hover:text-orange-600 transition" onclick="toggleMobileMenu()">Contact Us</a>
+    </div>
+  </div>
+
+  <header class="max-w-7xl mx-auto px-6 pt-6">
+    <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-3xl p-8 text-white relative overflow-hidden shadow-lg min-h-[160px] flex items-center">
+      <div class="space-y-2 relative z-10">
+        <span class="bg-orange-500 text-white text-[9px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full">Chalte Raho Drops</span>
+        <h1 class="text-2xl md:text-4xl font-extrabold leading-tight tracking-tight">Rukna Nahi Hai,<br class="hidden md:block"> Bas Chalte Raho!</h1>
+        <p class="text-slate-300 text-xs max-w-md">Premium design, elite daily life comfort. Direct locked dynamic payment system available.</p>
+      </div>
+      <div class="absolute -right-10 -top-10 w-48 h-48 bg-orange-600 rounded-full blur-3xl opacity-20"></div>
+    </div>
+  </header>
+
+  <section class="max-w-7xl mx-auto px-6 pt-6">
+    <div class="bg-white border border-slate-100 rounded-2xl shadow-sm relative overflow-hidden h-64 md:h-80 w-full flex items-center justify-center">
+      
+      <div class="absolute top-3 left-4 z-20 bg-slate-900/80 backdrop-blur-sm text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+        🔥 Live Top Drops
+      </div>
+
+      <div class="slider-window" id="photo-only-carousel">
+        <div class="animate-pulse bg-slate-100 w-full h-full"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <main class="max-w-7xl mx-auto px-6 pt-10 pb-24">
+    <div class="flex items-center justify-between mb-6 border-b border-slate-100 pb-3">
+      <div>
+        <h2 class="text-xl font-bold tracking-tight text-slate-800">Featured Shoes Catalog</h2>
+        <p class="text-xs text-slate-400 mt-0.5">Click on any model to view sizes and details</p>
+      </div>
+    </div>
+    
+    <div id="loading-skeleton" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="animate-pulse bg-white border border-slate-100 rounded-2xl p-4 h-72"></div>
+      <div class="animate-pulse bg-white border border-slate-100 rounded-2xl p-4 h-72"></div>
+    </div>
+
+    <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 hidden"></div>
+  </main>
+
+  <footer class="border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-400 font-medium">
+    &copy; 2026 Chalte Raho Store. All Rights Reserved. Built with Premium UX.
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCfour2pGNn0VXBkWNbFFNCcc7Z1U_Pvfs",
+      authDomain: "my-app-9cd4e.firebaseapp.com",
+      projectId: "my-app-9cd4e",
+      storageBucket: "my-app-9cd4e.firebasestorage.app",
+      messagingSenderId: "600438554251",
+      appId: "1:600438554251:web:a840935c234eb346e99e8e"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.toggleMobileMenu = () => {
+      const menu = document.getElementById('mobile-menu');
+      if (menu.classList.contains('hidden')) {
+        menu.classList.remove('hidden');
+        setTimeout(() => menu.classList.remove('translate-x-full'), 10);
+      } else {
+        menu.classList.add('translate-x-full');
+        setTimeout(() => menu.classList.add('hidden'), 300);
+      }
+    };
+
+    // Load Database Engine
+    async function loadStoreEngine() {
+      const grid = document.getElementById('products-grid');
+      const photoOnlyCarousel = document.getElementById('photo-only-carousel');
+      const skeleton = document.getElementById('loading-skeleton');
+      
+      const productsRef = collection(db, "products");
+      const q = query(productsRef, orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+      
+      grid.innerHTML = '';
+      photoOnlyCarousel.innerHTML = '';
+
+      if (querySnapshot.empty) {
+        const fallbackHTML = `<div class="text-xs text-slate-400 p-4 w-full text-center">No items inside database.</div>`;
+        grid.innerHTML = fallbackHTML;
+        photoOnlyCarousel.innerHTML = fallbackHTML;
+        skeleton.classList.add('hidden');
+        grid.classList.remove('hidden');
+        return;
+      }
+
+      let allDocs = [];
+      querySnapshot.forEach(doc => {
+        allDocs.push({ id: doc.id, ...doc.data() });
+      });
+
+      // 1. INJECT PURE SLIDES FOR AUTOMATIC HORIZONTAL TRANSACTION
+      const top5Items = allDocs.slice(0, 5);
+      top5Items.forEach((item, index) => {
+        const imgSource = item.imageBase64 || "https://via.placeholder.com/600x400";
+        // Default pehli image active rahegi screen par
+        const initialStatusClass = (index === 0) ? "active" : "";
+        
+        photoOnlyCarousel.innerHTML += `
+          <div class="slide-item ${initialStatusClass}">
+            <img src="${imgSource}" 
+                 alt="${item.name}" 
+                 class="max-h-full max-w-full object-contain cursor-pointer transition transform duration-200 hover:scale-102"
+                 onclick="window.location.href='product.html?id=${item.id}'">
+          </div>
+        `;
+      });
+
+      // 2. INJECT MAIN PRODUCTS LIST (Full Catalog Grid below)
+      allDocs.forEach((item) => {
+        const imgSource = item.imageBase64 || "https://via.placeholder.com/300";
+        grid.innerHTML += `
+          <div class="group relative bg-white border border-slate-100 rounded-2xl p-4 transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col justify-between" 
+               onclick="window.location.href='product.html?id=${item.id}'">
+            <div>
+              <div class="aspect-square w-full overflow-hidden rounded-xl bg-slate-50 relative mb-3 flex items-center justify-center p-2 border border-slate-50">
+                <img src="${imgSource}" alt="${item.name}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300">
+                ${item.tag ? `<span class="absolute top-2 left-2 bg-slate-950 text-white text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">${item.tag}</span>` : ''}
+              </div>
+              <div class="flex justify-between items-start px-0.5">
+                <div>
+                  <h3 class="text-xs font-bold text-slate-800 group-hover:text-orange-600 transition truncate max-w-[140px]">${item.name}</h3>
+                  <p class="text-[9px] text-slate-400 uppercase font-semibold">${item.category || 'Shoes'}</p>
+                </div>
+                <p class="text-xs font-black text-slate-900">₹${item.price}</p>
+              </div>
+            </div>
+            <div class="mt-3">
+              <span class="w-full text-center block bg-slate-50 text-slate-700 group-hover:bg-orange-600 group-hover:text-white text-xs font-semibold py-2 rounded-xl transition">
+                View Details
+              </span>
+            </div>
+          </div>
+        `;
+      });
+
+      skeleton.classList.add('hidden');
+      grid.classList.remove('hidden');
+
+      // 3. SECURE ENGINE TRANSITION SLIDER ACTIVATE
+      if(top5Items.length > 1) {
+        initSecureCarousel();
+      }
+    }
+
+    function initSecureCarousel() {
+      let currentIndex = 0;
+      
+      setInterval(() => {
+        const items = document.querySelectorAll('.slide-item');
+        if(items.length === 0) return;
+
+        // 1. Current chal rahi photo ko left side bahar slide out karo
+        const currentItem = items[currentIndex];
+        currentItem.classList.remove('active');
+        currentItem.classList.add('prev');
+
+        // 2. Agla product select karo
+        currentIndex = (currentIndex + 1) % items.length;
+
+        // 3. Agli photo ko right side se center screen me slide in karo
+        const nextItem = items[currentIndex];
+        nextItem.classList.remove('prev');
+        nextItem.style.transition = 'none'; // Instant reset position to right
+        nextItem.style.transform = 'translateX(100%)';
+        
+        // Force layout re-flow so browser recognizes reset position
+        nextItem.offsetHeight; 
+        
+        nextItem.style.transition = 'transform 0.6s ease-in-out';
+        nextItem.classList.add('active');
+
+        // 4. Old slide ko cleanly reset karke background me right layout par bhej do
+        setTimeout(() => {
+          items.forEach((it, idx) => {
+            if(idx !== currentIndex) {
+              it.classList.remove('prev');
+            }
+          });
+        }, 600);
+
+      }, 3000); // Har 3 second me solid real right-to-left slide animation chalegi!
+    }
+
+    loadStoreEngine().catch(err => console.error(err));
+  </script>
+</body>
+</html>

@@ -5,71 +5,155 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chalte Raho - Product Details</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  </style>
 </head>
-<body class="bg-slate-50 text-slate-900 antialiased min-h-screen">
+<body class="bg-slate-50 text-slate-900 antialiased min-h-screen relative">
 
-  <nav class="bg-white/80 backdrop-blur-md border-b border-slate-100 px-6 py-4 flex justify-between items-center sticky top-0 z-50">
+  <nav class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-100 px-6 py-4 flex justify-between items-center">
     <div class="text-2xl font-bold tracking-tight text-orange-600 cursor-pointer" onclick="window.location.href='index.html'">
       Chalte<span class="text-slate-800">Raho.</span>
     </div>
-    <button onclick="window.location.href='index.html'" class="text-xs font-semibold text-slate-600 hover:text-orange-600 bg-slate-100 px-4 py-2 rounded-xl transition">
-      ← Back to Store
-    </button>
+    <a href="index.html" class="text-xs font-bold text-slate-600 hover:text-orange-600 bg-slate-100 px-4 py-2 rounded-xl transition">
+      ← Back to Shop
+    </a>
   </nav>
 
-  <main class="max-w-6xl mx-auto px-6 py-12">
-    
-    <div id="product-loader" class="text-center py-20 text-slate-400 animate-pulse font-medium">
-      Shoe ki details fetch ho rahi hain...
+  <main class="max-w-6xl mx-auto px-6 py-10">
+    <div id="loading-state" class="text-center py-20">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto"></div>
+      <p class="text-xs text-slate-400 mt-4 font-medium">Fetching premium product details...</p>
     </div>
 
-    <div id="product-content" class="grid grid-cols-1 md:grid-cols-2 gap-12 bg-white border border-slate-100 rounded-3xl p-6 md:p-12 shadow-sm hidden">
+    <div id="product-layout" class="hidden grid grid-cols-1 md:grid-cols-2 gap-10 bg-white border border-slate-100 p-6 md:p-10 rounded-3xl shadow-sm">
       
-      <div class="aspect-square bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 p-4 flex items-center justify-center">
-        <img id="shoe-img" src="" alt="Shoe Image" class="max-h-full max-w-full object-contain rounded-xl shadow-sm hover:scale-105 transition duration-300">
+      <div class="w-full aspect-square bg-slate-50 rounded-2xl flex items-center justify-center p-6 border border-slate-100 overflow-hidden relative">
+        <img id="product-img" src="" alt="Shoes" class="max-h-full max-w-full object-contain transition duration-300 hover:scale-105">
+        <span id="product-tag" class="absolute top-4 left-4 bg-slate-950 text-white text-[9px] font-bold px-2 py-0.5 rounded uppercase hidden"></span>
       </div>
 
-      <div class="flex flex-col justify-between">
+      <div class="flex flex-col justify-between space-y-6">
         <div>
-          <span id="shoe-tag" class="bg-orange-100 text-orange-700 text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider hidden"></span>
-          <h1 id="shoe-name" class="text-3xl font-extrabold text-slate-800 tracking-tight mt-3">Shoe Name Loading...</h1>
-          <p id="shoe-cat" class="text-sm text-slate-400 mt-1 font-medium">Category: Shoes</p>
+          <span id="product-category" class="text-[10px] font-black text-orange-600 uppercase tracking-widest bg-orange-50 px-2 py-1 rounded-md">Sneakers</span>
+          <h1 id="product-name" class="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900 mt-3">Product Name</h1>
           
-          <div class="mt-6 flex items-baseline space-x-3">
-            <span id="shoe-price" class="text-3xl font-black text-slate-900">₹0</span>
-            <span class="text-sm text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md">Free Delivery</span>
+          <div class="flex items-center space-x-3 mt-4">
+            <span id="product-price" class="text-2xl font-black text-slate-900">₹0</span>
+            <span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-md">⚡ Free Delivery</span>
           </div>
 
-          <p class="text-slate-500 text-sm mt-6 leading-relaxed border-t border-slate-100 pt-6">
-            Chalte Raho premium sneaker series offers unparalleled comfort and style. Built for high performance, daily lifestyle hustle, and durability. Crafted with premium materials.
-          </p>
+          <div class="mt-6 pt-6 border-t border-slate-100">
+            <h3 class="text-xs font-bold text-slate-400 tracking-wider uppercase">Product Details</h3>
+            <p id="product-desc" class="text-slate-600 text-sm mt-2 leading-relaxed">Premium daily comfort design with premium elite looks.</p>
+          </div>
 
-          <div class="mt-8">
-            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-3">Select UK Size</h4>
-            <div class="flex space-x-3" id="size-box">
-              <button onclick="selectSize(this)" class="w-12 h-12 rounded-xl border border-slate-200 text-sm font-semibold hover:border-orange-500 transition">7</button>
-              <button onclick="selectSize(this)" class="w-12 h-12 rounded-xl border border-slate-200 text-sm font-semibold hover:border-orange-500 transition">8</button>
-              <button onclick="selectSize(this)" class="w-12 h-12 rounded-xl border border-slate-200 text-sm font-semibold hover:border-orange-500 transition">9</button>
-              <button onclick="selectSize(this)" class="w-12 h-12 rounded-xl border border-slate-200 text-sm font-semibold hover:border-orange-500 transition">10</button>
+          <div class="mt-6">
+            <h3 class="text-xs font-bold text-slate-400 tracking-wider uppercase mb-3">Select UK Size</h3>
+            <div class="flex space-x-3" id="size-container">
+              <button onclick="selectSize(7)" class="size-btn border border-slate-200 text-sm font-bold w-12 h-12 rounded-xl flex items-center justify-center bg-white hover:border-orange-500 transition">7</button>
+              <button onclick="selectSize(8)" class="size-btn border border-slate-200 text-sm font-bold w-12 h-12 rounded-xl flex items-center justify-center bg-white hover:border-orange-500 transition">8</button>
+              <button onclick="selectSize(9)" class="size-btn border border-slate-200 text-sm font-bold w-12 h-12 rounded-xl flex items-center justify-center bg-white hover:border-orange-500 transition">9</button>
+              <button onclick="selectSize(10)" class="size-btn border border-slate-200 text-sm font-bold w-12 h-12 rounded-xl flex items-center justify-center bg-white hover:border-orange-500 transition">10</button>
             </div>
           </div>
         </div>
 
-        <div class="mt-8 pt-6 border-t border-slate-100">
-          <button id="buy-btn" class="w-full bg-slate-950 hover:bg-orange-600 text-white font-semibold py-4 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
-            Buy Now & Proceed
+        <div class="pt-6 border-t border-slate-100">
+          <button onclick="openDetailsPopup()" class="w-full text-center bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 rounded-2xl shadow-lg transition transform active:scale-98 flex items-center justify-center space-x-2">
+            <span>⚡ Buy Now & Proceed</span>
           </button>
         </div>
-
       </div>
     </div>
   </main>
 
+  <div id="popup-details" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4 transition-all duration-300">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 transform scale-95 opacity-0 transition-all duration-300 dynamic-modal flex flex-col max-h-[90vh]">
+      <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-2">
+        <h2 class="text-lg font-bold tracking-tight text-slate-800">📦 Delivery Address</h2>
+        <button onclick="closePopup('popup-details')" class="text-slate-400 hover:text-slate-600 text-lg">✕</button>
+      </div>
+      <div class="space-y-4 overflow-y-auto pr-1 flex-1">
+        <div>
+          <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wide">Full Name</label>
+          <input type="text" id="cust-name" placeholder="Enter your full name" class="w-full mt-1 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-orange-500 bg-slate-50">
+        </div>
+        <div>
+          <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wide">Phone Number (WhatsApp)</label>
+          <input type="number" id="cust-phone" placeholder="Enter 10-digit number" class="w-full mt-1 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-orange-500 bg-slate-50">
+        </div>
+        <div>
+          <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wide">Full Delivery Address</label>
+          <textarea id="cust-address" rows="3" placeholder="House No, Colony, City, State" class="w-full mt-1 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-orange-500 bg-slate-50 resize-none"></textarea>
+        </div>
+        <div>
+          <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wide">Pincode</label>
+          <input type="number" id="cust-pincode" placeholder="6 digit pincode" class="w-full mt-1 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-orange-500 bg-slate-50">
+        </div>
+      </div>
+      <div class="pt-4 border-t border-slate-100 mt-4">
+        <button onclick="submitDetailsForm()" class="w-full bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold py-3.5 rounded-xl transition">
+          Confirm & Pay ➔
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="popup-payment" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4 transition-all duration-300">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 transform scale-95 opacity-0 transition-all duration-300 dynamic-modal">
+      <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-2">
+        <h2 class="text-lg font-bold tracking-tight text-slate-800">💸 Scan & Pay Amount</h2>
+        <button onclick="closePopup('popup-payment')" class="text-slate-400 hover:text-slate-600 text-lg">✕</button>
+      </div>
+      
+      <div class="text-center space-y-4">
+        <p class="text-xs text-slate-500 font-medium">Scan this locked QR with any UPI App (GPay, PhonePe, Paytm)</p>
+        
+        <div class="bg-slate-50 p-4 rounded-2xl inline-block border border-slate-100 mx-auto">
+          <img id="pay-qr-code" src="" alt="Dynamic Secure QR" class="w-48 h-48 mx-auto">
+          <div id="qr-payable-price" class="text-lg font-black text-slate-800 mt-2">₹0</div>
+        </div>
+
+        <div class="text-left pt-2">
+          <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wide">Enter 12-Digit UTR / Transaction ID</label>
+          <input type="text" id="pay-utr" placeholder="Paste or type UTR after payment" class="w-full mt-1 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold tracking-wider text-center focus:outline-none focus:border-orange-500 bg-slate-100">
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-slate-100 mt-4">
+        <button onclick="verifyAndPushOrder()" class="w-full bg-orange-600 hover:bg-orange-700 text-white text-sm font-bold py-3.5 rounded-xl transition shadow-md">
+          Verify & Complete Order
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="popup-verification" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-md hidden flex items-center justify-center p-4 transition-all duration-300">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-8 shadow-2xl border border-slate-100 text-center transform scale-95 opacity-0 transition-all duration-300 dynamic-modal">
+      <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto text-orange-600 text-2xl animate-pulse mb-4">⏳</div>
+      <h2 class="text-xl font-extrabold tracking-tight text-slate-900">Order Placed!</h2>
+      <p class="text-orange-600 font-bold text-xs mt-1 uppercase tracking-wider">Under Verification</p>
+      
+      <p class="text-slate-500 text-sm mt-4 leading-relaxed font-medium">
+        Your order is under verification for <span class="text-slate-800 font-bold">2-4 hours</span>.<br>Thank you for waiting!
+      </p>
+      
+      <div class="mt-6 flex items-center justify-center space-x-2 text-xs text-slate-400">
+        <div class="animate-spin rounded-full h-3 w-3 border-b-2 border-slate-400"></div>
+        <span>Redirecting you to WhatsApp...</span>
+      </div>
+    </div>
+  </div>
+
+  <footer class="border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-400 font-medium">
+    &copy; 2026 Chalte Raho Store. Premium Checkout.
+  </footer>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCfour2pGNn0VXBkWNbFFNCcc7Z1U_Pvfs",
@@ -83,64 +167,180 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Size Selector Logic
     let selectedSize = null;
-    window.selectSize = (btn) => {
-      // Reset all buttons border
-      document.querySelectorAll('#size-box button').forEach(b => b.classList.remove('border-orange-500', 'bg-orange-50', 'text-orange-600'));
-      // Active current button
-      btn.classList.add('border-orange-500', 'bg-orange-50', 'text-orange-600');
-      selectedSize = btn.innerText;
+    let currentProductName = "";
+    let currentProductPrice = "";
+
+    window.selectSize = (size) => {
+      selectedSize = size;
+      const btns = document.querySelectorAll('.size-btn');
+      btns.forEach(btn => {
+        if(parseInt(btn.innerText) === size) {
+          btn.classList.add('border-orange-600', 'bg-orange-50', 'text-orange-600');
+        } else {
+          btn.classList.remove('border-orange-600', 'bg-orange-50', 'text-orange-600');
+        }
+      });
     };
 
-    // Get Product ID from URL parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get('id');
+    async function loadProductDetails() {
+      const params = new URLSearchParams(window.location.search);
+      const productId = params.get('id');
 
-    async function loadSingleProduct() {
       if(!productId) {
-        alert("Product ID nahi mili!");
-        window.location.href = "index.html";
+        window.location.href = 'index.html';
         return;
       }
 
-      // Fetch precise single document from Firestore
       const docRef = doc(db, "products", productId);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        const product = docSnap.data();
+        const data = docSnap.data();
+        currentProductName = data.name;
+        currentProductPrice = data.price;
 
-        // Update Dom Elements
-        document.getElementById('shoe-name').innerText = product.name;
-        document.getElementById('shoe-price').innerText = `₹${product.price}`;
-        document.getElementById('shoe-img').src = product.imageBase64 || "https://via.placeholder.com/500";
-        if(product.tag) {
-          const tagEl = document.getElementById('shoe-tag');
-          tagEl.innerText = product.tag;
+        document.getElementById('product-img').src = data.imageBase64 || "https://via.placeholder.com/600";
+        document.getElementById('product-name').innerText = data.name;
+        document.getElementById('product-price').innerText = "₹" + data.price;
+        
+        if(data.category) document.getElementById('product-category').innerText = data.category;
+        if(data.description) document.getElementById('product-desc').innerText = data.description;
+        
+        if(data.tag) {
+          const tagEl = document.getElementById('product-tag');
+          tagEl.innerText = data.tag;
           tagEl.classList.remove('hidden');
         }
 
-        // Hide Loader & Display Content
-        document.getElementById('product-loader').classList.add('hidden');
-        document.getElementById('product-content').classList.remove('hidden');
-
-        // Buy button logic trigger
-        document.getElementById('buy-btn').onclick = () => {
-          if(!selectedSize) {
-            alert("Bhai phle size toh select kar lo!");
-            return;
-          }
-          alert(`Success! Shoe: ${product.name}, Size: ${selectedSize}. Ab isko checkout system pe direct redirect kar sakte hain!`);
-        };
-
+        document.getElementById('loading-state').classList.add('hidden');
+        document.getElementById('product-layout').classList.remove('hidden');
       } else {
-        alert("Aisa koi product nahi mila database me!");
-        window.location.href = "index.html";
+        window.location.href = 'index.html';
       }
     }
 
-    loadSingleProduct().catch(err => console.error(err));
+    // Modal Handle Animation Controls
+    window.openDetailsPopup = () => {
+      if(!selectedSize) {
+        alert("Please select a UK size first!");
+        return;
+      }
+      const el = document.getElementById('popup-details');
+      el.classList.remove('hidden');
+      setTimeout(() => {
+        el.querySelector('.dynamic-modal').classList.remove('scale-95', 'opacity-0');
+      }, 50);
+    };
+
+    window.closePopup = (id) => {
+      const el = document.getElementById(id);
+      el.querySelector('.dynamic-modal').classList.add('scale-95', 'opacity-0');
+      setTimeout(() => {
+        el.classList.add('hidden');
+      }, 300);
+    };
+
+    window.submitDetailsForm = () => {
+      const name = document.getElementById('cust-name').value.trim();
+      const phone = document.getElementById('cust-phone').value.trim();
+      const address = document.getElementById('cust-address').value.trim();
+      const pincode = document.getElementById('cust-pincode').value.trim();
+
+      if(!name || !phone || !address || !pincode) {
+        alert("Please fill all bio data delivery details!");
+        return;
+      }
+
+      // Hide address modal instantly
+      closePopup('popup-details');
+
+      // Setup Amount-Locked Dynamic QR 
+      const upiId = "agarwalprince629@okaxis"; // Terii provided dynamic integration ID
+      const payeeName = "Chalte Raho Store";
+      document.getElementById('qr-payable-price').innerText = "₹" + currentProductPrice;
+      
+      // Automatic Amount-locked upi URL scheme format link
+      const upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${currentProductPrice}&cu=INR`;
+      
+      // QR Code image source generation
+      document.getElementById('pay-qr-code').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUrl)}`;
+
+      // Open QR Code Payment popup panel
+      setTimeout(() => {
+        const payEl = document.getElementById('popup-payment');
+        payEl.classList.remove('hidden');
+        setTimeout(() => {
+          payEl.querySelector('.dynamic-modal').classList.remove('scale-95', 'opacity-0');
+        }, 50);
+      }, 350);
+    };
+
+    window.verifyAndPushOrder = async () => {
+      const utr = document.getElementById('pay-utr').value.trim();
+      if(!utr || utr.length < 6) {
+        alert("Please enter a valid 12-digit UTR or Transaction ID!");
+        return;
+      }
+
+      // Collect data to push to Firebase
+      const name = document.getElementById('cust-name').value.trim();
+      const phone = document.getElementById('cust-phone').value.trim();
+      const address = document.getElementById('cust-address').value.trim();
+      const pincode = document.getElementById('cust-pincode').value.trim();
+
+      try {
+        // Firebase order tracking insert
+        await addDoc(collection(db, "orders"), {
+          customerName: name,
+          phone: phone,
+          address: address,
+          pincode: pincode,
+          productName: currentProductName,
+          price: currentProductPrice,
+          size: selectedSize,
+          utrNumber: utr,
+          status: "Under Verification",
+          createdAt: serverTimestamp()
+        });
+
+        // Close Payment Popup
+        closePopup('popup-payment');
+
+        // Show Under Verification screen
+        setTimeout(() => {
+          const verifEl = document.getElementById('popup-verification');
+          verifEl.classList.remove('hidden');
+          setTimeout(() => {
+            verifEl.querySelector('.dynamic-modal').classList.remove('scale-95', 'opacity-0');
+          }, 50);
+
+          // Redirect to WhatsApp with full automated typed details after 3 seconds
+          setTimeout(() => {
+            const adminWhatsApp = "919897151463"; // Your real shared number
+            const whatsappText = `👟 *NEW ORDER PLACED* 👟\n\n` + 
+                                 `👤 *Name:* ${name}\n` +
+                                 `📞 *Phone:* ${phone}\n` +
+                                 `📍 *Address:* ${address}\n` +
+                                 `📌 *Pincode:* ${pincode}\n\n` +
+                                 `📦 *Product:* ${currentProductName}\n` +
+                                 `📐 *Size:* UK-${selectedSize}\n` +
+                                 `💰 *Price:* ₹${currentProductPrice}\n\n` +
+                                 `🆔 *UTR/Transaction ID:* ${utr}\n\n` +
+                                 `🕒 _Status: Under verification for 2-4 hours._`;
+            
+            window.open(`https://wa.me/${adminWhatsApp}?text=${encodeURIComponent(whatsappText)}`, '_self');
+          }, 3500);
+
+        }, 350);
+
+      } catch (e) {
+        console.error("Error creating order: ", e);
+        alert("Something went wrong! Please try again.");
+      }
+    };
+
+    loadProductDetails().catch(err => console.error(err));
   </script>
 </body>
 </html>
